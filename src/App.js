@@ -1,52 +1,65 @@
-import logo from './logo.svg';
-import './App.css';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Register from './components/register';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Home from './components/home';
-import Login from './components/login';
-import BuildProfile from './components/buildProfile';
-import ProfileForm from './components/profileForm';
-import UploadPic from './components/uploadPic';
-import ViewJob from './components/viewJob';
-
+import logo from "./logo.svg";
+import "./App.css";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Register from "./components/register";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Home from "./components/home";
+import Login from "./components/login";
+import BuildProfile from "./components/buildProfile";
+import ProfileForm from "./components/profileForm";
+import UploadPic from "./components/uploadPic";
+import ViewJob from "./components/viewJob";
+import Front from "./components/startingPage";
+import Ifollow from "./components/ifollow";
+import ViewCompany from "./components/viewCompany";
 
 function App() {
-   const router = createBrowserRouter([
-   
-    { 
-      path:"/home",
-      element:<Home/>
-    },
-    { 
-      path:"/profile=/:userId",
-      element:<BuildProfile/>,
-    },
-   {
-     path: "/profile/edit/:userId",
-     element: <ProfileForm/>
-   },
+  const router = createBrowserRouter([
     {
-      path :"/accounts/login",
-      element:<Login/>
+      path : "/",
+      element : <Front/>
+    },
+    {
+      path: "/home",
+      element: <Home />,
+    },
+    {
+      path: "/profile=/:userId",
+      element: <BuildProfile />,
+    },
+    {
+      path: "/profile/edit/:userId",
+      element: <ProfileForm />,
+    },
+    {
+      path: "/accounts/login",
+      element: <Login />,
     },
 
     {
-      path :"/accounts/register",
-      element:<Register/>
+      path: "/accounts/register",
+      element: <Register />,
     },
-      {
-        path: "/profile/edit-pic",
-        element: <UploadPic/>
-      },
-      {
-        path: "/viewJob/:jobId",
-        element:  <ViewJob/>
-      }
-   ])
+    {
+      path: "/profile/edit-pic",
+      element: <UploadPic />,
+    },
+    {
+      path: "/viewJob/:jobId",
+      element: <ViewJob />,
+    },
+    {
+      path : "/ifollow",
+      element: <Ifollow/>
+    },
+    {
+      path : "viewCompany/:cid",
+      element: <ViewCompany/>
+    }
+  ]);
   return (
     <div className="App">
-             <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </div>
   );
 }

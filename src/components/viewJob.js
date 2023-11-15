@@ -21,7 +21,7 @@ function ViewJob() {
       <div className="container pt-3">
         <div className="d-flex justify-content-between">
           <div>
-            Home / JobId : {getJobDetails && getJobDetails._id.slice(0, 3)}
+            Home / JobId : {getJobDetails._id && getJobDetails._id.slice(0,3)}
           </div>
           <div style={{ cursor: "pointer" }}>
             <BsBookmark />{" "}
@@ -33,7 +33,7 @@ function ViewJob() {
           <div className="d-flex justify-content-evenly gap-2">
             <div
               style={{ fontSize: "0.8rem" }}
-              className="text-success border border-success rounded-pill d-flex justify-content-center align-items-center ps-2 pe-2"
+              className=" text-success border border-success rounded-pill d-flex justify-content-center align-items-center ps-2 pe-2"
             >
               HIRING
             </div>
@@ -177,7 +177,7 @@ function ViewJob() {
         <h3>About Company</h3>
         <div className="card-profile">
           <p>
-            {getJobDetails &&
+            {getJobDetails.company_name &&
               getJobDetails.company_name.slice(0, 2).toUpperCase()}
           </p>
           <div>
@@ -187,6 +187,9 @@ function ViewJob() {
               {
               <div>{getJobDetails && getJobDetails.States}</div>
             }
+          </div>
+          <div>
+            <span>View Company </span>
           </div>
         </div>
       </div>

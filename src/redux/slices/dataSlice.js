@@ -19,7 +19,9 @@ const dataSlice = createSlice({
       userDetails: {},
       update: {},
       upload: {},
-      getJobDetails : {}
+      getJobDetails : {},
+      company: {},
+      companyJobs : []
     },
   },
 
@@ -127,6 +129,20 @@ const dataSlice = createSlice({
     builder.addCase(getJob.rejected, (state, action) => {
       state.error = action.error;
     });
+    builder.addCase(getOneCompany.fulfilled, (state, action) => {
+      state.value.company = action.payload;
+    });
+
+    builder.addCase(getOneCompany.rejected, (state, action) => {
+      state.error = action.error;
+    });
+    builder.addCase(getCompanyJobs.fulfilled, (state, action) => {
+      state.value.companyJobs = action.payload;
+    });
+
+    builder.addCase(getCompanyJobs.rejected, (state, action) => {
+      state.error = action.error;
+    });
   },
 });
 
@@ -216,6 +232,11 @@ export const deleteCompany = createAsyncThunk("deleteCompany", async ({ cid }) =
   return data;
 });
 
+export const getOneCompany = createAsyncThunk("getCOmpany", async ({ cid }) => {
+ 
+  const { data } = await axios.get(baseUrl + "/company/getCompany/" + cid);
+  return data;
+});
 export const uploadImage = createAsyncThunk("cloudinary", async (arg) => {
   
   const { data } = await axios.post(
@@ -232,6 +253,11 @@ export const getAllCompanies = createAsyncThunk("getAllCompanies", async() => {
 
 export const getJob = createAsyncThunk("getCompany", async({jobId}) => {
   const {data} = await axios.get(baseUrl + "/jobs/get/" + jobId)
+  return data
+})
+
+export const getCompanyJobs  = createAsyncThunk("getCompanyJobs", async({cid}) => {
+  const {data} = await axios.get(baseUrl + "/company/getCompanyJobs/" + cid)
   return data
 })
 

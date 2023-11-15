@@ -31,7 +31,7 @@ function Header() {
               src="https://res.cloudinary.com/cliqtick/image/upload/v1692600339/icons/logo-techie-_IE_uqk1bc.png"
             />
           </div>
-          <div className="d-flex justify-content-center align-items-center gap-3 border p-1 searchbar-div">
+          <div className="d-flex justify-content-center align-items-center gap-3 border p-1 searchbar-div ">
             <div>
               <input
                 className=" border-0 searchbar"
@@ -55,7 +55,7 @@ function Header() {
           >
             Build My Profile
           </Link>
-          <div className="border rounded-pill p-2 border-success text-success">
+          <div onClick={() => navigate("/ifollow")} className="border rounded-pill p-2 border-success text-success">
             iFollow
           </div>
           <div onClick={handleClick} className="profile-name">
