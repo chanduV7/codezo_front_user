@@ -55,7 +55,7 @@ function Header() {
           >
             Build My Profile
           </Link>
-          <div onClick={() => navigate("/ifollow")} className="border rounded-pill p-2 border-success text-success">
+          <div onClick={() => navigate("/ifollow")} style={{cursor: "pointer"}} className="border rounded-pill p-2 border-success text-success">
             iFollow
           </div>
           <div onClick={handleClick} className="profile-name">

@@ -14,7 +14,13 @@ function Ifollow() {
     <div>
       <Header />
       <div className="container">
-        <div className="h3">i-Follow</div>
+        <div className="h2 pt-4 pb-2">i-Follow</div>
+        <div style={{width:"100%"}} className="">
+            <input className="w-100 p-2 " type="text"/>
+        </div>
+        <div className="h2 pt-4 pb-2">Companies Followed</div>
+        
+        <div className="h3 pt-4 pb-2">Browse Companies</div>
         <div style={{display : "grid",gridTemplateColumns: "repeat(4,1fr)" }} className="gap-3">
         {
               companyData && companyData.map((e)=>{
