@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCompanyJobs, getOneCompany } from "../redux/slices/dataSlice";
-import { Link, useMatches } from "react-router-dom";
+import { followCompany, getCompanyJobs, getOneCompany } from "../redux/slices/dataSlice";
+import { Link, useMatches, useParams } from "react-router-dom";
 import Header from "./header";
 import "../styles/home.scss"
 import { BsBookmark,BsArrowRight } from "react-icons/bs";
@@ -10,9 +10,13 @@ const ViewCompany = () => {
   const companyJobs = useSelector((state) => state.User.value.companyJobs);
   const dispatch = useDispatch();
   const params = useMatches();
- 
+  const params1 = useParams();
+  console.log(params1);
+  const handleFollow = () => {
+    dispatch(followCompany(params1))
+  }
   useEffect(() => {
-    dispatch(getOneCompany({ cid: params[0].params.cid }));
+    dispatch(getOneCompany(params1));
   }, []);
   return (
     <div>
@@ -22,7 +26,7 @@ const ViewCompany = () => {
           <div>i-Follow / {company._id && company.company_name}</div>
           <div style={{ cursor: "pointer" }}>
             <BsBookmark />{" "}
-            <span className="text-decoration-underline">Follow</span>
+            <span onClick={handleFollow} className="text-decoration-underline">Follow</span>
           </div>
         </div>
         <div className="h2">{company && company.company_name}</div>
@@ -65,7 +69,7 @@ const ViewCompany = () => {
       </div>
       <div className="homePage-container">
          <div className="homePage-cards-container container">
-            {companyJobs &&
+            {companyJobs.length &&
               companyJobs.map((e) => {
                 return (
                   <div className="card-container">

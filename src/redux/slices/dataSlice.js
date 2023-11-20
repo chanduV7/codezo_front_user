@@ -23,7 +23,8 @@ const dataSlice = createSlice({
       company: {},
       companyJobs : [],
       postSavedJob : {},
-      getSavedJob: []
+      getSavedJob: [],
+      postFollowCompany : {}
     },
   },
 
@@ -160,6 +161,14 @@ const dataSlice = createSlice({
     builder.addCase(getUserSaveJobs.rejected, (state, action) => {
       state.error = action.error;
     });
+
+      builder.addCase(followCompany.fulfilled, (state, action) => {
+      state.value.postFollowCompany = action.payload;
+    });
+
+    builder.addCase(followCompany.rejected, (state, action) => {
+      state.error = action.error;
+    });
   },
 });
 
@@ -252,7 +261,7 @@ export const deleteCompany = createAsyncThunk("deleteCompany", async ({ cid }) =
 
 export const getOneCompany = createAsyncThunk("getCOmpany", async ({ cid }) => {
  
-  const { data } = await axios.get(baseUrl + "/company/getCompany/" + cid);
+  const { data } = await axios.get(baseUrl2 + "/company/getCompany/" + cid);
   return data;
 });
 export const uploadImage = createAsyncThunk("cloudinary", async (arg) => {
@@ -295,6 +304,19 @@ export const saveJob = createAsyncThunk("saveJob", async({jobId}) => {
    const token = localStorage.getItem("token");
    console.log(jobId);
    const {data} = await axios.post(baseUrl + `/jobs/saveJob/${jobId}`, {userId : userId},
+   {
+    headers: {
+      Authorization : "Bearer " + token
+    }
+   }  );
+   return data;
+})
+
+export const followCompany = createAsyncThunk("followCompany", async({cid}) => {
+  const userId = localStorage.getItem("userId")
+   const token = localStorage.getItem("token");
+  
+   const {data} = await axios.post(baseUrl2 + `/company/followComp/${cid}`, {userId : userId},
    {
     headers: {
       Authorization : "Bearer " + token
