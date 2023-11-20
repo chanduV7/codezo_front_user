@@ -12,6 +12,8 @@ import ViewJob from "./components/viewJob";
 import Front from "./components/startingPage";
 import Ifollow from "./components/ifollow";
 import ViewCompany from "./components/viewCompany";
+import savedJobs from "./components/savedJobs";
+import SavedJobs from "./components/savedJobs";
 
 function App() {
   const router = createBrowserRouter([
@@ -55,6 +57,10 @@ function App() {
     {
       path : "viewCompany/:cid",
       element: <ViewCompany/>
+    },
+    {
+      path : "savedJobs/:userId",
+      element: <SavedJobs/>
     }
   ]);
   return (

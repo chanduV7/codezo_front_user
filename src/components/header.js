@@ -69,7 +69,9 @@ function Header() {
         >
           <ul>
             <li onClick={() => navigate("/profile=/:userId")}>My Profile</li>
-            <li>Saved Jobs</li>
+            <li>
+               <Link to={"/savedJobs/" + userId}>Saved Jobs</Link>
+            </li>
             <li>Applied Jobs</li>
             <li
               onClick={() => {

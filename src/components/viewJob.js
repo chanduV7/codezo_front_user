@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useMatch, useMatches, useNavigate } from "react-router-dom";
-import { getJob } from "../redux/slices/dataSlice";
+import { useMatch, useMatches, useNavigate, useParams } from "react-router-dom";
+import { getJob, saveJob } from "../redux/slices/dataSlice";
 import Header from "./header";
 import { BsBookmark } from "react-icons/bs";
 import "../styles/viewJob.scss";
+import { logDOM } from "@testing-library/react";
 function ViewJob() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const userId = localStorage.getItem("userId")
+  const {jobId : jobkey} = useParams();
   const getJobDetails = useSelector((state) => state.User.value.getJobDetails);
   const params = useMatches();
+  // const handleSave = () => {
+    
+  //   dispatch(saveJob({ jobId ,userId}))
+  // }
   useEffect(() => {
     dispatch(getJob({ jobId: params[0].params.jobId }));
   }, []);
@@ -23,9 +29,9 @@ function ViewJob() {
           <div>
             Home / JobId : {getJobDetails._id && getJobDetails._id.slice(0,3)}
           </div>
-          <div style={{ cursor: "pointer" }}>
+          <div style={{ cursor: "pointer" }} onClick={() => dispatch(saveJob({ jobId : jobkey, userId : userId}))}>
             <BsBookmark />{" "}
-            <span className="text-decoration-underline">Save Job</span>
+            <span className="text-decoration-underline" >Save Job</span>
           </div>
         </div>
         <div className="h2">{getJobDetails.title}</div>

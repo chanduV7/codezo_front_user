@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { baseUrl } from "../../utils/api";
+import { baseUrl, baseUrl1, baseUrl2 } from "../../utils/api";
 
 const dataSlice = createSlice({
   name: "users",
@@ -21,7 +21,9 @@ const dataSlice = createSlice({
       upload: {},
       getJobDetails : {},
       company: {},
-      companyJobs : []
+      companyJobs : [],
+      postSavedJob : {},
+      getSavedJob: []
     },
   },
 
@@ -38,7 +40,7 @@ const dataSlice = createSlice({
     });
 
     builder.addCase(getAllJobs.fulfilled, (state, action) => {
-      console.log(action.payload);
+    
       state.value.jobData = action.payload;
     });
 
@@ -143,6 +145,21 @@ const dataSlice = createSlice({
     builder.addCase(getCompanyJobs.rejected, (state, action) => {
       state.error = action.error;
     });
+    builder.addCase(saveJob.fulfilled, (state, action) => {
+      state.value.postSavedJob = action.payload;
+    });
+
+    builder.addCase(saveJob.rejected, (state, action) => {
+      state.error = action.error;
+    });
+
+    builder.addCase(getUserSaveJobs.fulfilled, (state, action) => {
+      state.value.getSavedJob = action.payload;
+    });
+
+    builder.addCase(getUserSaveJobs.rejected, (state, action) => {
+      state.error = action.error;
+    });
   },
 });
 
@@ -161,8 +178,9 @@ export const getAllJobs = createAsyncThunk("getAllJObs", async (args) => {
 });
 export const deleteJob = createAsyncThunk("deleteJob", async ({ jobId }) => {
   console.log(jobId);
+  const userId  = localStorage.getItem("userId")
   const token = localStorage.getItem("token");
-  const { data } = await axios.delete(baseUrl + "/jobs/delete/" + jobId, {
+  const { data } = await axios.delete(baseUrl + `/jobs/delete?jobId=${jobId}&userId=${userId}`, {
     headers: {
       Authorization: "Bearer " + token,
     },
@@ -170,24 +188,24 @@ export const deleteJob = createAsyncThunk("deleteJob", async ({ jobId }) => {
   return data;
 });
 export const RegisterUser = createAsyncThunk("register", async (e) => {
-  const { data } = await axios.post(baseUrl + "/users/register", e);
+  const { data } = await axios.post(baseUrl1 + "/users/register", e);
   return data;
 });
 
 export const LoginUser = createAsyncThunk("login", async (e) => {
-  const { data } = await axios.post(baseUrl + "/users/login", e);
+  const { data } = await axios.post(baseUrl1 + "/users/login", e);
   return data;
 });
 
 export const getAllUsers = createAsyncThunk("getAllUsers", async () => {
-  const { data } = await axios.get(baseUrl + "/users/getAll");
+  const { data } = await axios.get(baseUrl1 + "/users/getAll");
   return data;
 });
 
 export const getUser = createAsyncThunk("getUser", async ({ userId }) => {
   const token = localStorage.getItem("token");
 
-  const { data } = await axios.get(baseUrl + "/users/getUser/" + userId, {
+  const { data } = await axios.get(baseUrl1 + "/users/getUser/" + userId, {
     headers: {
       Authorization: "Bearer " + token,
     },
@@ -200,7 +218,7 @@ export const updateUser = createAsyncThunk("updateUser", async (arg) => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
   const { data } = await axios.patch(
-    baseUrl + "/users/updateUser/" + userId,
+    baseUrl1 + "/users/updateUser/" + userId,
     arg
     // {
     // headers: {
@@ -213,7 +231,7 @@ export const updateUser = createAsyncThunk("updateUser", async (arg) => {
 export const deleteUser = createAsyncThunk("deleteUser", async ({ userId }) => {
   console.log(userId);
   const token = localStorage.getItem("token");
-  const { data } = await axios.delete(baseUrl + "/users/delete/" + userId, {
+  const { data } = await axios.delete(baseUrl1 + "/users/delete/" + userId, {
     headers: {
       Authorization: "Bearer " + token,
     },
@@ -224,7 +242,7 @@ export const deleteUser = createAsyncThunk("deleteUser", async ({ userId }) => {
 export const deleteCompany = createAsyncThunk("deleteCompany", async ({ cid }) => {
   console.log(cid);
   const token = localStorage.getItem("token");
-  const { data } = await axios.delete(baseUrl + "/company/delete/" + cid, {
+  const { data } = await axios.delete(baseUrl2 + "/company/delete/" + cid, {
     headers: {
       Authorization: "Bearer " + token,
     },
@@ -247,7 +265,7 @@ export const uploadImage = createAsyncThunk("cloudinary", async (arg) => {
 });
 
 export const getAllCompanies = createAsyncThunk("getAllCompanies", async() => {
-  const {data} = await axios.get(baseUrl + "/company/getall")
+  const {data} = await axios.get(baseUrl2 + "/company/getall")
   return data
 })
 
@@ -257,19 +275,44 @@ export const getJob = createAsyncThunk("getCompany", async({jobId}) => {
 })
 
 export const getCompanyJobs  = createAsyncThunk("getCompanyJobs", async({cid}) => {
-  const {data} = await axios.get(baseUrl + "/company/getCompanyJobs/" + cid)
+  const {data} = await axios.get(baseUrl2 + "/company/getCompanyJobs/" + cid)
   return data
 })
 
 
 export const postCompany = createAsyncThunk("postCompany", async (arg) => {
   const token = localStorage.getItem("token");
-  const { data } = await axios.post(baseUrl + "/company/add", arg, {
+  const { data } = await axios.post(baseUrl2 + "/company/add", arg, {
     headers: {
       Authorization: "Bearer " + token,
     },
   });
   return data;
 });
+
+export const saveJob = createAsyncThunk("saveJob", async({jobId}) => {
+  const userId = localStorage.getItem("userId")
+   const token = localStorage.getItem("token");
+   console.log(jobId);
+   const {data} = await axios.post(baseUrl + `/jobs/saveJob/${jobId}`, {userId : userId},
+   {
+    headers: {
+      Authorization : "Bearer " + token
+    }
+   }  );
+   return data;
+})
+
+export const getUserSaveJobs = createAsyncThunk("getUserSavedJobs",async({userId}) => {
+  
+  const token = localStorage.getItem("token")
+  const {data} = await axios.get(baseUrl + "/jobs/savedJobs/all/" + userId,
+  {
+    headers : {
+      Authorization : "Bearer " + token
+    }
+  });
+  return data;
+})
 
 export default dataSlice.reducer;
